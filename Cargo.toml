@@ -1,0 +1,9 @@
+[package]
+name = "hello_cargo"
+version = "0.1.0"
+authors = ["Josiel Rocha <josiel.rocha@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+glob = "0.3.0"
+json = "0.12.4"
