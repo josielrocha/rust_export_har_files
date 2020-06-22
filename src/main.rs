@@ -2,26 +2,40 @@ use std::env;
 use std::path::Path;
 use std::fs::File;
 use std::io::BufReader;
+use std::io::prelude::*;
 
 use glob::glob;
+use serde_json::{Result, Value};
 
-fn export_har_file(path: String) -> Result<String, std::io::Error> {
+fn export_har_file(path: String) {
+	let content = match read_file_content(path) {
+		Ok(contents) => contents,
+		Err(e) => e.to_string()
+	};
+
+	// println!("{}", content);
+	let data = match serde_json::from_str(&content).expect("Failed to read JSON data") {
+		Ok(content) => content
+	};
+
+	println!("{}", data);
+}
+
+fn read_file_content(path: String) -> Result<String, std::io::Error> {
 	println!("export_har_file({})", &path);
 
-	let mut file = match File::open(&path) {
+	let file = match File::open(&path) {
 		Ok(file) => file,
 		Err(e) => return Err(e)
 	};
 
 	let mut buf_reader = BufReader::new(file);
-
 	let mut contents = String::new();
 
-	match buf_reader.read_to_string(&mut content) {
-		Ok(_) => s,
+	match buf_reader.read_to_string(&mut contents) {
+		Ok(_) => Ok(contents),
 		Err(e) => Err(e),
 	}
-	// buf_reader.read_to_string(&mut contents);
 }
 
 fn export_har_files(root_folder: String) {
