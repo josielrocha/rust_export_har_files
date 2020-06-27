@@ -17,12 +17,12 @@ struct HttpHeader {
 
 #[derive(Debug, Serialize, Deserialize)]
 struct ResponseContent {
-	text: String
+	text: Option<String>
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 struct Response {
-	headers: HttpHeader,
+	headers: Vec<HttpHeader>,
 	content: ResponseContent
 }
 
@@ -42,12 +42,23 @@ struct Log {
 	entries: Vec<Resource>
 }
 
+#[derive(Debug, Serialize, Deserialize)]
+struct Browser {
+	version: String
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+struct Har {
+	log: Log
+}
+
 fn export_har_file(path: String) -> std::io::Result<()> {
 	let content = read_file_content(path)?;
-	let log: Log = serde_json::from_str(&content)?;
+
+	let har: Har = serde_json::from_str(&content)?;
 	
-	for entry in log.entries {
-		println!("{}", 1)
+	for entry in har.log.entries {
+		println!("{:#?}", entry)
 	}
 	
 	Ok(())
