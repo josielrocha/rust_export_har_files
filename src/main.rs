@@ -60,23 +60,24 @@ fn read_file_content(path: String) -> std::io::Result<String> {
 	let mut buf_reader = BufReader::new(file);
 	let mut contents = String::new();
 
-	println!("{}", "JOSIEL");
+	buf_reader.read_to_string(&mut contents)?;
 
-	match buf_reader.read_to_string(&mut contents) {
-		Ok(_) => Ok(contents),
-		Err(e) => Err(e)
-	}
+	Ok(contents)
 }
 
-fn export_har_files(root_folder: String) -> std::io::Result<()> {
+fn export_har_files(root_folder: String) -> Result<(), std::io::Error> {
 	println!("export_har_files({})", &root_folder);
 
 	let pattern = format!("{}/{}", &root_folder, "**/*.har.json");
 
 	for file in glob(&pattern).expect("Failed to read glob pattern") {
 		match file {
-			Ok(path) => export_har_file(path.display().to_string()),
-			Err(e) => println!("{}", e.to_string())
+			Ok(path) => {
+				export_har_file(path.display().to_string())?;
+			},
+			Err(e) => {
+				return Err(e.into_error());
+			}
 		}
 	}
 
@@ -88,6 +89,6 @@ fn main() -> std::io::Result<()> {
 	let data_directory = Path::new(&root_folder)
 		.join("resources").display().to_string();
 
-	export_har_files(data_directory);
+	export_har_files(data_directory)?;
 	Ok(())
 }
