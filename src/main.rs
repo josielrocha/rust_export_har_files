@@ -2,7 +2,7 @@ use std::env;
 use std::fs::{File, create_dir_all, OpenOptions};
 use std::io::BufReader;
 use std::io::prelude::*;
-use std::path::Path;
+use std::path::{Path, MAIN_SEPARATOR};
 
 use glob::glob;
 use regex::Regex;
@@ -70,13 +70,13 @@ struct Har {
 
 fn base64_to_file(path: &String, content: &String) -> std::io::Result<()> {
 	let mut path_slices: Vec<&str> = path
-		.split(std::path::MAIN_SEPARATOR)
+		.split(MAIN_SEPARATOR)
 		.collect();
 
 	path_slices.pop();
 	
 	let folder_path = path_slices
-		.join(&std::path::MAIN_SEPARATOR.to_string());
+		.join(&MAIN_SEPARATOR.to_string());
 
 	create_dir_all(folder_path)?;
 
@@ -88,8 +88,6 @@ fn base64_to_file(path: &String, content: &String) -> std::io::Result<()> {
 		.write(true)
 		.create(true)
 		.open(&cleaned_path)?;
-
-	// let content_slice = &content[..];
 
 	let mut stream_writer = FromBase64Writer::new(file_handler);
 	stream_writer.write_all(content.as_bytes()).unwrap();
@@ -145,7 +143,7 @@ fn read_file_content(path: String) -> std::io::Result<String> {
 fn export_har_files(root_folder: String, dist_directory: &String) -> Result<(), std::io::Error> {
 	println!("export_har_files({})", &root_folder);
 
-	let pattern = format!("{}/{}", &root_folder, "**/*.har.json");
+	let pattern = format!("{}{}{}", &root_folder, MAIN_SEPARATOR, "**/*.har.json");
 
 	for file in glob(&pattern).expect("Failed to read glob pattern") {
 		match file {
