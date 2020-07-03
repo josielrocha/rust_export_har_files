@@ -13,6 +13,13 @@ Exportar os recursos de um arquivo *.har* para arquivos individuais no armazenam
 ## Requisitos
 * [Rust](https://www.rust-lang.org/tools/install)
 
+## Conhecimentos aplicados
+* Manipulação de arquivos e diretórios
+* Utilização de Expressões Regulares
+* Parse de JSON usando biblioteca externa
+* Match patterns
+* Ownership
+
 ## Como funciona?
 No [Firefox](https://firefox.com), siga os seguintes passos:
 1. Pressione &lt;CTRL&gt; + &lt;SHIFT&gt; + &lt;E&gt; para abrir a ferramenta de inspeção de rede, ou seja, dos recursos que serão "baixados" durante o carregamento da página
