@@ -1,4 +1,5 @@
 # Exportador de recursos de arquivos .HAR
+> Exporta as imagens de um arquivo [HTTP Archive format](https://en.wikipedia.org/wiki/HAR)
 
 ## Objetivo do projeto
 Praticar com a linguagem para adquirir familiaridade e internalizar os conhecimentos adquiridos com a mesma
